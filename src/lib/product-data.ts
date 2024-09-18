@@ -4,6 +4,7 @@ export type ProductDataType = {
   id: string;
   name: string;
   price: number;
+  unit: string;
   barcode: string;
   stock: number;
   time_added: string;

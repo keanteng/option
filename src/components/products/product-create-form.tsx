@@ -7,6 +7,7 @@ import { z } from 'zod';
 import { useForm, FieldErrors } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from "react";
+import { createProduct } from "@/lib/actions";
 
 const ProductDataSchema = z.object({
   id: z.string(),
@@ -14,7 +15,7 @@ const ProductDataSchema = z.object({
   price: z.number().positive(),
   barcode: z.string(),
   stock: z.number().int().nonnegative(),
-  unit: z.number().int().nonnegative(),
+  unit: z.string(),
   time_added: z.string().refine((val) => {
     const date = new Date(val);
     return !isNaN(date.getTime());
@@ -25,7 +26,11 @@ const ProductDataSchema = z.object({
 
 type ProductDataType = z.infer<typeof ProductDataSchema>;
 
-export default function ProductCreateForm() {
+interface ProductCreateFormProps {
+  onClose: () => void;
+}
+
+export default function ProductCreateForm({ onClose }: ProductCreateFormProps) {
   const [uuid, setUuid] = useState<string>('');
   const [timestamp, setTimestamp] = useState<string>('');
   const {
@@ -38,7 +43,8 @@ export default function ProductCreateForm() {
   });
   
   const onSubmit = (data: ProductDataType) => {
-    alert(JSON.stringify(data, null, 2));
+    createProduct(data);
+    onClose();
   }
 
   const onInvalid = (errors: FieldErrors<ProductDataType>) => {
@@ -47,7 +53,7 @@ export default function ProductCreateForm() {
 
   useEffect(() => {
     const product_crypto_id = crypto.randomUUID().replace(/-/g, '').slice(0,5);
-    const currentTimestamp = new Date().toISOString();
+    const currentTimestamp = new Date().toLocaleString();
     setUuid(product_crypto_id)
     setTimestamp(currentTimestamp)
     setValue("id", product_crypto_id)
@@ -100,9 +106,9 @@ export default function ProductCreateForm() {
         <Label htmlFor="unit">Unit</Label>
         <Input
           id="unit"
-          {...register("unit", { valueAsNumber: true })}
+          {...register("unit")}
           placeholder="Unit"
-          type="number"
+          type="text"
         />
         {errors.unit && <p className="text-xs text-red-500 -mt-2">{errors.unit.message}</p>}
       </div>

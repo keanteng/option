@@ -31,7 +31,7 @@ export const EditModal: React.FC<AlertModalProps> = ({ isOpen, onClose, product 
       onClose={onClose}
     >
       <div>
-        <ProductEditForm product={product}/>
+        <ProductEditForm product={product} onClose={onClose}/>
       </div>
     </Modal>
   );

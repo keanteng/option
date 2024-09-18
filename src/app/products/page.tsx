@@ -1,9 +1,10 @@
 import { DataTable } from "@/components/products/data-table"
 import { columns } from "@/components/products/columns"
 import { ProductData } from "@/lib/product-data"
+import { loadProducts } from "@/lib/actions";
 
-export default function Products() {
-  const data = ProductData;
+export default async function Products() {
+  const data = await loadProducts();
 
   return (
     <div className="flex p-6 w-[calc(100vw-1.5rem)]">

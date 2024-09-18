@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { ProductDataType } from '@/lib/product-data';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
+import { deleteProduct } from '@/lib/actions';
 
 interface AlertModalProps {
   isOpen: boolean;
@@ -23,7 +24,8 @@ export const DeleteModal: React.FC<AlertModalProps> = ({ isOpen, onClose, produc
   }
 
   const handleDelete = () => {
-    alert('Product deleted');
+    deleteProduct(product.id);
+    onClose()
   }
 
   return (

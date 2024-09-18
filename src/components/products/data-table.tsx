@@ -74,6 +74,16 @@ export function DataTable<TData, TValue>({
     },
   })
 
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+
+  const handleOpenDialog = () => {
+    setIsDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+  };
+
   return (
     <div>
       <div className="flex items-center py-4">
@@ -86,7 +96,7 @@ export function DataTable<TData, TValue>({
             className="max-w-xs"
         />
         <div className="ml-2">
-          <Dialog>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
               <Button variant="outline" className="items-center flex">
                 New
@@ -101,7 +111,7 @@ export function DataTable<TData, TValue>({
                 </DialogDescription>
               </DialogHeader>
               <div>
-                <ProductCreateForm />
+                <ProductCreateForm onClose={handleCloseDialog}/>
               </div>
             </DialogContent>
           </Dialog>

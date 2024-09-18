@@ -7,10 +7,11 @@ import { Label } from "../ui/label";
 import { z } from 'zod';
 import { useForm, FieldErrors } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState } from "react";
+import { updateProduct } from "@/lib/actions";
 
 interface ProductEditFormProps {
     product: ProductDataType;
+    onClose: () => void;
 }
 
 const ProductDataSchema = z.object({
@@ -30,7 +31,7 @@ const ProductDataSchema = z.object({
 
 type ProductFormDataType = z.infer<typeof ProductDataSchema>;
 
-export default function ProductEditForm({ product } : ProductEditFormProps) {
+export default function ProductEditForm({ product, onClose } : ProductEditFormProps) {
   const {
     handleSubmit,
     register,
@@ -41,7 +42,8 @@ export default function ProductEditForm({ product } : ProductEditFormProps) {
   });
 
   const onSubmit = (data: ProductFormDataType) => {
-    console.log(data);
+    updateProduct(data);
+    onClose();
   };
 
   const onInvalid = (errors: FieldErrors<ProductFormDataType>) => {
