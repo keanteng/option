@@ -11,8 +11,7 @@ export default function Products() {
         <div className="flex flex-col gap-0.5">
           <h1 className="text-3xl font-bold">Products</h1>
           <p className="text-sm text-gray-500">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-            do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            List of all products in the inventory.
           </p>
         </div>
         <div>

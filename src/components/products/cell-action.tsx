@@ -9,8 +9,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { EditModal } from "../modal/edit-modal";
-import { DeleteModal } from "../modal/delete-modal";
+import { EditModal } from "../modal/products/edit-modal";
+import { DeleteModal } from "../modal/products/delete-modal";
 import { MoreHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ProductDataType } from "@/lib/product-data";
@@ -28,12 +28,12 @@ export default function CellAction({ product }: CellActionProps) {
       <EditModal
         isOpen={isEditModalOpen}
         onClose = {() => setIsEditModalOpen(false)}
-        onConfirm = {() => console.log('Confirmed')}
+        product = {product}
       />
       <DeleteModal
         isOpen={isDeleteModalOpen}
         onClose = {() => setIsDeleteModalOpen(false)}
-        onConfirm = {() => console.log('Confirmed')}
+        product = {product}
       />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

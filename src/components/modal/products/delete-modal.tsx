@@ -1,16 +1,17 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { ProductDataType } from '@/lib/product-data';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
 
 interface AlertModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: () => void;
+  product: ProductDataType;
 }
 
-export const EditModal: React.FC<AlertModalProps> = ({ isOpen, onClose, onConfirm }) => {
+export const DeleteModal: React.FC<AlertModalProps> = ({ isOpen, onClose, product }) => {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -21,10 +22,14 @@ export const EditModal: React.FC<AlertModalProps> = ({ isOpen, onClose, onConfir
     return null;
   }
 
+  const handleDelete = () => {
+    alert('Product deleted');
+  }
+
   return (
     <Modal
-      title="View Product"
-      description="You can edit the product details here."
+      title="Are You Sure?"
+      description="This action cannot be undone. The product will be permanently deleted and this action is irreversible."
       isOpen={isOpen}
       onClose={onClose}
     >
@@ -32,8 +37,8 @@ export const EditModal: React.FC<AlertModalProps> = ({ isOpen, onClose, onConfir
         <Button variant="outline" onClick={onClose}>
           Cancel
         </Button>
-        <Button variant="destructive" onClick={onConfirm}>
-          Save
+        <Button variant="destructive" onClick={handleDelete}>
+          Confirm
         </Button>
       </div>
     </Modal>

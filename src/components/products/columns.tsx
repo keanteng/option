@@ -40,6 +40,10 @@ export const columns: ColumnDef<ProductDataType>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: 'barcode',
+    header: 'Barcode',
+  },
+  {
     accessorKey: "name",
     header: ({ column }) => {
         return (
