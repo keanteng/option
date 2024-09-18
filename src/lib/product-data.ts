@@ -1,3 +1,4 @@
+
 export type ProductDataType = {
   id: string;
   name: string;

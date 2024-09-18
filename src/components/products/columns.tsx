@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { ProductDataType } from "@/lib/product-data"
+import CellAction from "./cell-action"
 
 export const columns: ColumnDef<ProductDataType>[] = [
   {
@@ -79,30 +80,6 @@ export const columns: ColumnDef<ProductDataType>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
-      const product = row.original
- 
-    return (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">Open menu</span>
-            <MoreHorizontal className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem
-            onClick={() => navigator.clipboard.writeText(product.name)}
-          >
-            Copy product name
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>View product details
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-      )
-    },
+    cell: ({ row }) => <CellAction product={row.original} />,
   },
 ]

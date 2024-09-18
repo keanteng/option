@@ -3,8 +3,29 @@
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+
+const ProductDataSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  price: z.number().positive(),
+  description: z.string(),
+  stock: z.number().int().nonnegative(),
+  time_added: z.string().refine((val) => !isNaN(Date.parse(val)), {
+    message: "Invalid date format",
+  }),
+});
 
 export default function ProductCreateForm() {
+  const {
+    handleSubmit,
+    register,
+    setValue,
+    control,
+    formState: {errors, isSubmitting},
+  } = useForm();
+  
   return (
     <form className="flex flex-col gap-3 mt-2">
       <div className="flex flex-col gap-2">
