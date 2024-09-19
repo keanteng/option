@@ -8,6 +8,7 @@ import { z } from 'zod';
 import { useForm, FieldErrors } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { updateProduct } from "@/lib/actions";
+import { useToast } from "@/hooks/use-toast";
 
 interface ProductEditFormProps {
     product: ProductDataType;
@@ -40,10 +41,19 @@ export default function ProductEditForm({ product, onClose } : ProductEditFormPr
     resolver: zodResolver(ProductDataSchema),
     defaultValues: product,
   });
+  const { toast } = useToast();
 
-  const onSubmit = (data: ProductFormDataType) => {
-    updateProduct(data);
-    onClose();
+  const onSubmit = async (data: ProductFormDataType) => {
+    try {
+      await updateProduct(data);
+      onClose();
+      toast({
+        title: 'Product Edited',
+        description: `${data.time_added}`,
+      });
+    } catch (error: unknown) {
+      console.error('Failed to update product', error);
+    }
   };
 
   const onInvalid = (errors: FieldErrors<ProductFormDataType>) => {

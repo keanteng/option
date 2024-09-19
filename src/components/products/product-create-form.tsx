@@ -8,6 +8,7 @@ import { useForm, FieldErrors } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from "react";
 import { createProduct } from "@/lib/actions";
+import { useToast } from "@/hooks/use-toast";
 
 const ProductDataSchema = z.object({
   id: z.string(),
@@ -31,6 +32,7 @@ interface ProductCreateFormProps {
 }
 
 export default function ProductCreateForm({ onClose }: ProductCreateFormProps) {
+  const { toast } = useToast();
   const [uuid, setUuid] = useState<string>('');
   const [timestamp, setTimestamp] = useState<string>('');
   const {
@@ -42,9 +44,18 @@ export default function ProductCreateForm({ onClose }: ProductCreateFormProps) {
     resolver: zodResolver(ProductDataSchema),
   });
   
-  const onSubmit = (data: ProductDataType) => {
-    createProduct(data);
-    onClose();
+  // make synchronous request to create product and check for errors
+  const onSubmit = async (data: ProductDataType) => {
+    try {
+      await createProduct(data);
+      onClose();
+      toast({
+        title: 'Product created',
+        description: `${data.time_added}`,
+      });
+    } catch (error: unknown) {
+      console.error('Failed to create product', error);
+    }
   }
 
   const onInvalid = (errors: FieldErrors<ProductDataType>) => {
@@ -112,7 +123,12 @@ export default function ProductCreateForm({ onClose }: ProductCreateFormProps) {
         />
         {errors.unit && <p className="text-xs text-red-500 -mt-2">{errors.unit.message}</p>}
       </div>
-      <Button type="submit" className="mt-4" disabled={isSubmitting}>Create product</Button>
+      <Button 
+        type="submit"
+        className="mt-4" 
+        disabled={isSubmitting}
+      >
+        Create product</Button>
     </form>
   )
 }

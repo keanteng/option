@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import NavHeader from "@/components/navigation/nav-header";
 import { Viewport } from "next";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Option",
@@ -34,6 +35,7 @@ export default function RootLayout({
             <NavHeader />
             <div className="min-h-screen">
             {children}
+            <Toaster />
             </div>
           </div>
         </ThemeProvider>

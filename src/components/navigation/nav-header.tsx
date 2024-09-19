@@ -23,7 +23,13 @@ export default function NavHeader() {
     <div className='flex justify-between w-full items-center'>
       <div className='flex flex-row gap-2 items-center'>
         <OptionIcon className='h-6 w-6' />
-        <h1 className='text-lg text-bold hover:underline font-bold'>Option</h1>
+        <h1 className='text-lg text-bold hover:underline font-bold'>
+          <Link
+          href='/'
+          >
+            Option
+          </Link>
+          </h1>
       </div>
       <div>
         <ul className="flex flex-row items-center">

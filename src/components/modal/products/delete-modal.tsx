@@ -5,6 +5,7 @@ import { ProductDataType } from '@/lib/product-data';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
 import { deleteProduct } from '@/lib/actions';
+import { useToast } from '@/hooks/use-toast';
 
 interface AlertModalProps {
   isOpen: boolean;
@@ -14,6 +15,7 @@ interface AlertModalProps {
 
 export const DeleteModal: React.FC<AlertModalProps> = ({ isOpen, onClose, product }) => {
   const [isMounted, setIsMounted] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     setIsMounted(true);
@@ -23,9 +25,17 @@ export const DeleteModal: React.FC<AlertModalProps> = ({ isOpen, onClose, produc
     return null;
   }
 
-  const handleDelete = () => {
-    deleteProduct(product.id);
-    onClose()
+  const handleDelete = async () => {
+    try {
+      await deleteProduct(product.id);
+      onClose();
+      toast({
+        title: 'Product Deleted',
+        description: `${product.name} has been deleted.`,
+      });
+    } catch (error: unknown) {
+      console.error('Failed to delete product', error);
+    }
   }
 
   return (
