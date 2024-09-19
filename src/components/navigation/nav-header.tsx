@@ -12,6 +12,10 @@ const navItems = [
       label: 'Products',
       href: '/products',
   },
+  {
+    label: 'Orders',
+    href: '/orders',
+  }
 ];
 
 export default function NavHeader() {
