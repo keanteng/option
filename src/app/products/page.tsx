@@ -1,7 +1,7 @@
 import { DataTable } from "@/components/products/data-table"
 import { columns } from "@/components/products/columns"
 import { ProductData } from "@/lib/product-data"
-import { loadProducts } from "@/lib/actions";
+import { loadProducts } from "@/lib/products/actions";
 
 export default async function Products() {
   const data = await loadProducts();

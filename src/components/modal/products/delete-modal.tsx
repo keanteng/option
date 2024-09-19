@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { ProductDataType } from '@/lib/product-data';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
-import { deleteProduct } from '@/lib/actions';
+import { deleteProduct } from '@/lib/products/actions';
 import { useToast } from '@/hooks/use-toast';
 
 interface AlertModalProps {

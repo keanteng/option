@@ -7,7 +7,7 @@ import { Label } from "../ui/label";
 import { z } from 'zod';
 import { useForm, FieldErrors } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { updateProduct } from "@/lib/actions";
+import { updateProduct } from "@/lib/products/actions";
 import { useToast } from "@/hooks/use-toast";
 
 interface ProductEditFormProps {

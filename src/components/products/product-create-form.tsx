@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { useForm, FieldErrors } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from "react";
-import { createProduct } from "@/lib/actions";
+import { createProduct } from "@/lib/products/actions";
 import { useToast } from "@/hooks/use-toast";
 
 const ProductDataSchema = z.object({
