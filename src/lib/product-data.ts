@@ -1,5 +1,3 @@
-import { Barcode } from "lucide-react";
-
 export type ProductDataType = {
   id: string;
   name: string;
