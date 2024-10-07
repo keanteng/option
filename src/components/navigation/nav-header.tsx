@@ -55,7 +55,7 @@ export default function NavHeader() {
         </ul>
     </div>
       <div className='flex flex-row gap-3 items-center'>
-        <Link href="#">
+        <Link href="https://github.com/keanteng/option">
           <GitHubLogoIcon className='h-6 w-6' />
         </Link>
         <ColorMode />
