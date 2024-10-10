@@ -12,6 +12,7 @@ import { ProductDataType } from "@/lib/product-data";
 import Autosuggest from 'react-autosuggest';
 import { useParams } from "next/navigation";
 import { createOrderItem } from "@/lib/order-items/actions";
+import { useToast } from "@/hooks/use-toast";
 
 interface OrderItemCreateFormProps {
   onClose: () => void;
@@ -31,6 +32,7 @@ const OrderItemDataSchema = z.object({
 
 export default function OrderItemCreateForm({onClose, products}: OrderItemCreateFormProps) {
   const [uuid, setUuid] = useState<string>('');
+  const { toast } = useToast();
   const {
     handleSubmit,
     register,
@@ -44,6 +46,11 @@ export default function OrderItemCreateForm({onClose, products}: OrderItemCreate
   const onSubmit = async (data: OrderItemDataType) => {
     try {
       await createOrderItem(data)
+      onClose()
+      toast({
+        title: 'Order item added',
+        description: `Added ${data.quantity} ${data.unit} of ${data.item_name}`,
+      });
     } catch (error: unknown) {
       console.error('Failed to create product', error);
     }
@@ -147,6 +154,7 @@ export default function OrderItemCreateForm({onClose, products}: OrderItemCreate
           {...register("price", { valueAsNumber: true })}
           placeholder="price"
           type="number"
+          step='0.01'
         />
         {errors.price && <p className="text-xs text-red-500 -mt-2">{errors.price.message}</p>}
       </div>

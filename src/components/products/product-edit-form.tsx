@@ -18,8 +18,8 @@ interface ProductEditFormProps {
 const ProductDataSchema = z.object({
   id: z.string(),
   name: z.string().min(1, "Name is required"),
-  price: z.number().positive(),
-    barcode: z.string(),
+  price: z.number(),
+  barcode: z.string(),
   stock: z.number().int().nonnegative(),
   unit: z.string().min(1, "Unit is required"),
   time_added: z.string().refine((val) => {
@@ -89,6 +89,7 @@ export default function ProductEditForm({ product, onClose } : ProductEditFormPr
           {...register("price", { valueAsNumber: true })}
           placeholder="Price"
           type="number"
+          step='0.01'
         />
         {errors.price && <p className="text-xs text-red-500 -mt-2">{errors.price.message}</p>}
       </div>

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
 import { OrderItemDataType } from '@/lib/order-item-data';
 import { deleteOrderItem } from '@/lib/order-items/actions';
+import { useToast } from '@/hooks/use-toast';
 
 interface AlertModalProps {
   isOpen: boolean;
@@ -14,6 +15,7 @@ interface AlertModalProps {
 
 export const DeleteModal: React.FC<AlertModalProps> = ({ isOpen, onClose, order_item }) => {
   const [isMounted, setIsMounted] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     setIsMounted(true);
@@ -27,6 +29,10 @@ export const DeleteModal: React.FC<AlertModalProps> = ({ isOpen, onClose, order_
     try {
       await deleteOrderItem(order_item.id)
       onClose();
+      toast({
+        title: 'Order Item Deleted',
+        description: `${order_item.item_name} has been deleted.`,
+      });
     } catch (error: unknown) {
       console.error('Failed to delete product', error);
     }

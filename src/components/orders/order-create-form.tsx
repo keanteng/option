@@ -8,6 +8,7 @@ import { useForm, FieldErrors } from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod";
 import {useState, useEffect} from 'react';
 import { createOrder } from "@/lib/orders/actions";
+import { useToast } from "@/hooks/use-toast";
 
 import {
   Select,
@@ -50,10 +51,15 @@ export default function OrderCreateForm({uuid}: OrderCreateFormProps) {
       total_price: 0
     }
   });
+  const { toast } = useToast();
     
   const onSubmit = async (data: OrderCreateFormDataType) => {
     try {
       await createOrder(data);
+      toast({
+        title: 'Order Created',
+        description: `${data.time_added}`
+      });
     } catch (error: unknown) {
       console.error('Failed to update product', error);
     }

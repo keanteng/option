@@ -100,6 +100,7 @@ export default function ProductCreateForm({ onClose }: ProductCreateFormProps) {
           {...register("price", { valueAsNumber: true })}
           placeholder="Price"
           type="number"
+          step="0.01"
         />
         {errors.price && <p className="text-xs text-red-500 -mt-2">{errors.price.message}</p>}
       </div>

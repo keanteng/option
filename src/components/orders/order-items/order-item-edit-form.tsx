@@ -8,6 +8,7 @@ import { useForm, FieldErrors } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { OrderItemDataType } from "@/lib/order-item-data";
 import { updateOrderItem } from "@/lib/order-items/actions";
+import { useToast } from "@/hooks/use-toast";
 
 interface OrderItemCreateFormProps {
   onClose: () => void;
@@ -37,11 +38,15 @@ export default function OrderItemEditForm({onClose, order_item}: OrderItemCreate
     resolver: zodResolver(OrderItemDataSchema),
     defaultValues: order_item
   });
+  const { toast } = useToast();
   
   const onSubmit = async (data: OrderItemEditFormDataType) => {
     try {
       await updateOrderItem(data)
-      console.log(data)
+      toast({
+        title: 'Order Item Edited',
+        description: `You edited ${data.item_name}`,
+      });
       onClose()
     } catch (error: unknown) {
       console.error('Failed to create product', error);
@@ -82,6 +87,7 @@ export default function OrderItemEditForm({onClose, order_item}: OrderItemCreate
           {...register("price", { valueAsNumber: true })}
           placeholder="price"
           type="number"
+          step='0.01'
           readOnly
         />
         {errors.price && <p className="text-xs text-red-500 -mt-2">{errors.price.message}</p>}

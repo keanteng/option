@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { useForm, FieldErrors } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { updateOrder } from "@/lib/orders/actions";
-
+import { useToast } from "@/hooks/use-toast";
 import {
   Select,
   SelectContent,
@@ -47,10 +47,15 @@ export default function OrderEditForm({ order }: OrderEditFormProps) {
     resolver: zodResolver(OrderDataSchema),
     defaultValues: order || {},
   });
+  const { toast } = useToast();
 
   const onSubmit = async (data: OrderEditFormDataType) => {
     try {
       await updateOrder(data)
+      toast({
+        title: 'Order Edited',
+        description: `${data.time_added}`,
+      });
     } catch (error: unknown) {
       console.error('Failed to update product', error);
     }
