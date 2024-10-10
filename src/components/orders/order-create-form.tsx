@@ -1,11 +1,13 @@
-import { OrderDataType } from "@/lib/order-data"
-import { Input } from "../ui/input"
-import { Label } from "../ui/label"
-import { Button } from "../ui/button"
+'use client';
+
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { Button } from "../ui/button";
 import { z } from 'zod';
 import { useForm, FieldErrors } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { updateOrder } from "@/lib/orders/actions";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {useState, useEffect} from 'react';
+import { createOrder } from "@/lib/orders/actions";
 
 import {
   Select,
@@ -30,36 +32,45 @@ const OrderDataSchema = z.object({
   status: z.string(),
 })
 
-type OrderEditFormDataType = z.infer<typeof OrderDataSchema>;
+type OrderCreateFormDataType = z.infer<typeof OrderDataSchema>;
 
-interface OrderEditFormProps {
-  order: OrderDataType | null
+interface OrderCreateFormProps {
+  uuid: string
 }
 
-export default function OrderEditForm({ order }: OrderEditFormProps) {
+export default function OrderCreateForm({uuid}: OrderCreateFormProps) {
   const {
     handleSubmit,
     register,
     setValue,
-    control,
     formState: {errors, isSubmitting},
-  } = useForm<OrderEditFormDataType>({
-    resolver: zodResolver(OrderDataSchema),
-    defaultValues: order || {},
+  } = useForm<OrderCreateFormDataType>({
+    resolver: zodResolver(OrderDataSchema), 
+    defaultValues: {
+      total_price: 0
+    }
   });
-
-  const onSubmit = async (data: OrderEditFormDataType) => {
+    
+  const onSubmit = async (data: OrderCreateFormDataType) => {
     try {
-      await updateOrder(data)
+      await createOrder(data);
     } catch (error: unknown) {
       console.error('Failed to update product', error);
     }
   } 
 
-  const onInvalid = (errors:FieldErrors<OrderEditFormDataType>) => {
+  const onInvalid = (errors:FieldErrors<OrderCreateFormDataType>) => {
     console.log(errors);
   }
 
+  const [timestamp, setTimestamp] = useState<string>('');
+  useEffect(() => {
+    const currenttimestamp = new Date().toLocaleString();
+    setTimestamp(currenttimestamp)
+    setValue('time_added', timestamp)
+    setValue('id', uuid)
+  })
+    
   return (
     <form onSubmit={handleSubmit(onSubmit, onInvalid)} className="flex flex-col gap-5">
       <div className="flex flex-col gap-2">
@@ -76,23 +87,19 @@ export default function OrderEditForm({ order }: OrderEditFormProps) {
         <Label htmlFor="total_price">Total Price (Read Only & Auto-Update)</Label>
         <Input 
           id='total_price'
-          {...register('total_price')}
-          placeholder="total_price"
+          {...register('total_price', { valueAsNumber: true })}
+          placeholder="Total Price"
           type='number'
-          readOnly
         />
         {errors.total_price && <p className="text-xs text-red-500 -mt-2">{errors.total_price.message}</p>}
       </div>
       <div className="flex flex-col gap-2">
         <Label htmlFor="total_price">Status</Label>
         <Select
-          defaultValue={order?.status}
           onValueChange={(value) => setValue('status', value)}
         >
           <SelectTrigger className="w-[180px]">
-            <SelectValue 
-              placeholder="Select a status"
-            />
+            <SelectValue placeholder="Select a status"/>
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
@@ -104,7 +111,7 @@ export default function OrderEditForm({ order }: OrderEditFormProps) {
           </SelectContent>
         </Select>
       </div>
-      <Button type="submit" className="mt-4 w-1/4" disabled={isSubmitting}>Update Order</Button>
+      <Button type="submit" className="mt-4 w-1/4" disabled={isSubmitting}>Create Order</Button>
     </form>
   )
 }

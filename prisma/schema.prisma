@@ -4,6 +4,9 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+//  IMPORTANT!!!  Run the following commands after editing this file:
+//npx prisma migrate dev --name
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -21,4 +24,29 @@ model Product {
   stock Int
   unit String
   time_added String
+  OrderItem OrderItem[]
+}
+
+model Order {
+  id String @id @default(cuid())
+  customer_name String
+  time_added String
+  total_price Float
+  status String
+  OrderItem OrderItem[]
+}
+
+model OrderItem {
+  id String @id @default(cuid())
+  order_id String
+  product_id String
+  item_name String
+  quantity Int
+  price Float
+  unit String
+  barcode String
+
+  // Foreign keys
+  order Order @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
 }

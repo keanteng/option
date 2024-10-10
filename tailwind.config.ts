@@ -64,7 +64,7 @@ const config: Config = {
   		'2xl': '1536px'
   	}
   },
-  darkMode: ["class", "class"],
+  darkMode: 'class',
   plugins: [require("tailwindcss-animate")],
 };
 export default config;

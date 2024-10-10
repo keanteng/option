@@ -27,22 +27,34 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
 import * as React from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { DataTablePagination } from "./pagination"
-import { PlusIcon } from 'lucide-react';
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from 'react'
+import { PlusIcon } from '@radix-ui/react-icons';
+import OrderItemCreateForm from "./order-item-create-form"
+import { ProductDataType } from "@/lib/product-data"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  products: ProductDataType[]
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  products,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -67,32 +79,47 @@ export function DataTable<TData, TValue>({
     },
   })
 
-  const [uuid, setuuid] = useState<string>('');
-  useEffect(() => {
-      const newuuid = crypto.randomUUID().slice(0,6);
-      setuuid(newuuid);
-  }, [])
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
 
-  const router = useRouter();
-  const handlePageChange = (e:React.MouseEvent<HTMLElement>) => {
-    router.push(`orders/create/${uuid}`)
-  }
+  const handleOpenDialog = () => {
+    setIsDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+  };
 
   return (
     <div>
       <div className="flex items-center py-4">
-        <div className="flex flex-row gap-2">
-          <Input
-              placeholder="Filter order..."
-              value={(table.getColumn("customer_name")?.getFilterValue() as string) ?? ""}
-              onChange={(event) =>
-                  table.getColumn("customer_name")?.setFilterValue(event.target.value)
-              }
-              className="max-w-xs"
-          />
-          <Button onClick={handlePageChange}>
-           Order <PlusIcon className="w-4 h-4 ml-1"/>
-          </Button>
+        <Input
+            placeholder="Filter order item..."
+            value={(table.getColumn("item_name")?.getFilterValue() as string) ?? ""}
+            onChange={(event) =>
+                table.getColumn("item_name")?.setFilterValue(event.target.value)
+            }
+            className="max-w-xs"
+        />
+        <div className="ml-2">
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button className="items-center flex">
+                New
+                <PlusIcon className="w-4 h-4 ml-2" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px] bg-white">
+              <DialogHeader>
+                <DialogTitle>Add Order Item</DialogTitle>
+                <DialogDescription>
+                  Add a new item to the list.
+                </DialogDescription>
+              </DialogHeader>
+              <div>
+                <OrderItemCreateForm onClose={handleCloseDialog} products={products}/>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

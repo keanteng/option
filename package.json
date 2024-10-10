@@ -23,25 +23,31 @@
     "@tanstack/react-table": "^8.20.5",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "lodash": "^4.17.21",
+    "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.441.0",
     "next": "14.2.11",
     "next-themes": "^0.3.0",
     "react": "^18",
+    "react-autosuggest": "^10.1.0",
     "react-dom": "^18",
     "react-hook-form": "^7.53.0",
     "tailwind-merge": "^2.5.3",
     "tailwindcss-animate": "^1.0.7",
+    "usehooks-ts": "^3.1.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
+    "@types/react-autosuggest": "^10.1.11",
     "@types/react-dom": "^18",
+    "autoprefixer": "^10.4.20",
     "eslint": "^8",
     "eslint-config-next": "14.2.11",
-    "postcss": "^8",
+    "postcss": "^8.4.47",
     "prisma": "^5.19.1",
-    "tailwindcss": "^3.4.1",
+    "tailwindcss": "^3.4.13",
     "typescript": "^5"
   }
 }

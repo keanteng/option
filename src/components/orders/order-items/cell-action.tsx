@@ -10,31 +10,30 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { MoreHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { OrderDataType } from "@/lib/order-data";
-import { useRouter } from "next/navigation";
-import { DeleteModal } from "../modal/orders/delete-modal";
+import { OrderItemDataType } from "@/lib/order-item-data";
+import { EditModal } from "@/components/modal/order-items/edit-modal";
+import { DeleteModal } from "@/components/modal/order-items/delete-modal";
 import { useState } from "react";
-import { useDebounceCallback } from 'usehooks-ts';
 
 interface CellActionProps {
-  order: OrderDataType
+  order_item: OrderItemDataType
 }
 
-export default function CellAction({ order }: CellActionProps) {
+export default function CellAction({ order_item }: CellActionProps) {
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const router = useRouter();
-
-  const handleClick = useDebounceCallback((e: React.MouseEvent<HTMLElement>) => {
-      e.preventDefault()
-      router.push(`/orders/edit/${order.id}`)
-  }, 300);
 
   return (
     <>
+      <EditModal
+        isOpen={isEditModalOpen}
+        onClose = {() => setIsEditModalOpen(false)}
+        order_item = {order_item}
+      />
       <DeleteModal
         isOpen={isDeleteModalOpen}
         onClose = {() => setIsDeleteModalOpen(false)}
-        order={order}
+        order_item={order_item}
       />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -46,16 +45,16 @@ export default function CellAction({ order }: CellActionProps) {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem
-            onClick={() => navigator.clipboard.writeText(order.customer_name)}
+            onClick={() => navigator.clipboard.writeText(order_item.item_name)}
           >
-            Copy product name
+            Copy item name
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleClick}>
-            View order details
+          <DropdownMenuItem onClick={() => setIsEditModalOpen(true)}>
+            View item details
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setIsDeleteModalOpen(true)}>
-            Delete order
+            Delete item
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

@@ -1,8 +1,10 @@
 import { DataTable } from "@/components/orders/data-table"
 import { columns } from "@/components/orders/columns"
 import { OrderData } from "@/lib/order-data"
+import { loadOrders } from "@/lib/orders/actions"
 
 export default async function Products() {
+  const data = await loadOrders();
   return (
     <div className="flex p-6 w-[calc(100vw-1.5rem)]">
       <div className="flex flex-col justify-center w-full">
@@ -13,7 +15,7 @@ export default async function Products() {
           </p>
         </div>
         <div>
-          <DataTable columns={columns} data={OrderData} />
+          <DataTable columns={columns} data={data} />
         </div>
       </div>
     </div>
