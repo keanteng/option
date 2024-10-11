@@ -13,6 +13,7 @@ import Autosuggest from 'react-autosuggest';
 import { useParams } from "next/navigation";
 import { createOrderItem } from "@/lib/order-items/actions";
 import { useToast } from "@/hooks/use-toast";
+import { validateOrderTotalPrice } from "@/lib/order-items/actions";
 
 interface OrderItemCreateFormProps {
   onClose: () => void;
@@ -47,6 +48,7 @@ export default function OrderItemCreateForm({onClose, products}: OrderItemCreate
     try {
       await createOrderItem(data)
       onClose()
+      await validateOrderTotalPrice(data.order_id)
       toast({
         title: 'Order item added',
         description: `Added ${data.quantity} ${data.unit} of ${data.item_name}`,

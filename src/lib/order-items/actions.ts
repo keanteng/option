@@ -60,3 +60,24 @@ export async function deleteOrderItem(id: string) {
     revalidatePath('/orders');
     return order_items;
 }
+
+export async function validateOrderTotalPrice(orderId: string) {
+    noStore();
+    const orderItems = await prisma.orderItem.findMany({
+        where: { order_id: orderId },
+        select: {
+            price: true,
+            quantity: true
+        }
+    });
+
+    const totalPrice = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    //console.log(totalPrice)
+
+    await prisma.order.update({
+        where: { id: orderId },
+        data: { total_price: totalPrice}
+    });
+
+    return totalPrice;
+}

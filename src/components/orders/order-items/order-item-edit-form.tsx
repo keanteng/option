@@ -9,6 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { OrderItemDataType } from "@/lib/order-item-data";
 import { updateOrderItem } from "@/lib/order-items/actions";
 import { useToast } from "@/hooks/use-toast";
+import { validateOrderTotalPrice } from "@/lib/order-items/actions";
 
 interface OrderItemCreateFormProps {
   onClose: () => void;
@@ -43,6 +44,7 @@ export default function OrderItemEditForm({onClose, order_item}: OrderItemCreate
   const onSubmit = async (data: OrderItemEditFormDataType) => {
     try {
       await updateOrderItem(data)
+      await validateOrderTotalPrice(data.order_id)
       toast({
         title: 'Order Item Edited',
         description: `You edited ${data.item_name}`,
